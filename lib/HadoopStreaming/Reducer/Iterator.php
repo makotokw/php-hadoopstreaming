@@ -1,9 +1,15 @@
 <?php
+/**
+ * HadoopStreaming_Reducer_Iterator
+ * @author makoto_kw
+ */
 class HadoopStreaming_Reducer_Iterator implements Iterator
 {
 	var $key,
-		$lastEmit,
 		$emits,
+		$hasNext,
+		$nextKey,
+		$nextEmit,
 		$demiliter,
 		$autoSerialize;
 	
@@ -15,6 +21,7 @@ class HadoopStreaming_Reducer_Iterator implements Iterator
 	
 	function rewind() {
 		$this->key = null;
+		$this->nextKey = null;
 		$this->nextEmit = null;
 		$this->aggregateEmit();
 	}
@@ -33,13 +40,16 @@ class HadoopStreaming_Reducer_Iterator implements Iterator
 	
 	function aggregateEmit() {
 		unset($this->key, $this->emits);
-		$this->emits = array();
-		if ($this->nextEmit !== null) {
-			$this->emits[] = $this->nextEmit;
-			unset($this->nextEmit);
+		if ($this->nextKey !== null) {
+			$this->key = $this->nextKey;
+			$this->emits = array($this->nextEmit);
+			unset($this->nextKey, $this->nextEmit);
+		} else {
+			$this->emits = array();
 		}
 		while (!feof(STDIN)) {
 			list ($key, $value) = explode($this->delimiter, trim(fgets(STDIN)), 2);
+			if ($value === null) continue;
 			if ($this->autoSerialize) {
 				$value = unserialize($value);
 			}
@@ -48,7 +58,8 @@ class HadoopStreaming_Reducer_Iterator implements Iterator
 				$this->emits[] = $value;
 			} else {
 				if ($this->key != $key) {
-					$this->lastEmit = $value;
+					$this->nextKey = $key;
+					$this->nextEmit = $value;
 					break;
 				} else {
 					$this->emits[] = $value;
@@ -58,6 +69,6 @@ class HadoopStreaming_Reducer_Iterator implements Iterator
 	}
 
 	function valid() {
-		return (!feof(STDIN));
+		return (!feof(STDIN) || $this->key !== null);
 	}
 }

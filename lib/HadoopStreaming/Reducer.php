@@ -1,9 +1,13 @@
 <?php
 require_once(dirname(__FILE__).'/Reducer/Iterator.php');
+/**
+ * HadoopStreaming_Reducer
+ * @author makoto_kw
+ */
 abstract class HadoopStreaming_Reducer
 {
-	var $delimiter,
-		$autoSerialize;
+	var $delimiter;
+	var $autoSerialize;
 		
 	function __construct($delimiter = "\t", $autoSerialize = true)
 	{
@@ -16,6 +20,12 @@ abstract class HadoopStreaming_Reducer
 			}
 		}
 	}
+	
+	/**
+	 * reduce
+	 * @param string $key
+	 * @param array $eimits
+	 */
 	abstract function reduce($key, $eimits);
 	
 	function emit($key, $values)

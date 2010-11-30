@@ -1,8 +1,12 @@
 <?php
+/**
+ * HadoopStreaming_Mapper
+ * @author makoto_kw
+ */
 abstract class HadoopStreaming_Mapper
 {
-	var $delimiter,
-		$autoSerialize;
+	var $delimiter;
+	var $autoSerialize;
 	
 	function __construct($delimiter = "\t", $autoSerialize = true)
 	{
@@ -15,6 +19,10 @@ abstract class HadoopStreaming_Mapper
 		}
 	}
 	
+	/**
+	 * map
+	 * @param string $s	a line from STDIN
+	 */
 	abstract function map($s);
 	
 	function emit($key, $values)
