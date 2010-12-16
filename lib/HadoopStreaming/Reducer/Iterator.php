@@ -40,7 +40,7 @@ class HadoopStreaming_Reducer_Iterator implements Iterator
 	
 	function aggregateEmit() {
 		unset($this->key, $this->emits);
-		if ($this->nextKey !== null) {
+		if (isset($this->nextKey)) {
 			$this->key = $this->nextKey;
 			$this->emits = array($this->nextEmit);
 			unset($this->nextKey, $this->nextEmit);
@@ -48,12 +48,12 @@ class HadoopStreaming_Reducer_Iterator implements Iterator
 			$this->emits = array();
 		}
 		while (!feof(STDIN)) {
-			list ($key, $value) = explode($this->delimiter, trim(fgets(STDIN)), 2);
-			if ($value === null) continue;
+			@list ($key, $value) = explode($this->delimiter, trim(fgets(STDIN)), 2);
+			if (!isset($value)) continue;
 			if ($this->autoSerialize) {
 				$value = unserialize($value);
 			}
-			if ($this->key === null) {
+			if (!isset($this->key)) {
 				$this->key = $key;
 				$this->emits[] = $value;
 			} else {
@@ -69,6 +69,6 @@ class HadoopStreaming_Reducer_Iterator implements Iterator
 	}
 
 	function valid() {
-		return (!feof(STDIN) || $this->key !== null);
+		return (isset($this->key));
 	}
 }

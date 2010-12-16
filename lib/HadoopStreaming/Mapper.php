@@ -5,13 +5,11 @@
  */
 abstract class HadoopStreaming_Mapper
 {
-	var $delimiter;
-	var $autoSerialize;
+	var $delimiter = "\t";
+	var $autoSerialize = true;
 	
-	function __construct($delimiter = "\t", $autoSerialize = true)
+	function __construct()
 	{
-		$this->delimiter = $delimiter;
-		$this->autoSerialize = $autoSerialize;
 		while (!feof(STDIN)) {
 			if (false === $this->map(trim(fgets(STDIN)))) {
 				break;
