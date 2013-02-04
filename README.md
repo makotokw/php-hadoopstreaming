@@ -10,5 +10,5 @@ simple test without hadoop
 LICENSE
 =========
 
-New BSD License <http://www.opensource.org/licenses/bsd-license.php>  
+The MIT License (MIT)  
 See also LICENSE file
