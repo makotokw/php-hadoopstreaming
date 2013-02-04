@@ -1,4 +1,4 @@
-php-haddopstreaming
+php-hadoopstreaming
 ==============
 
 simple test without hadoop
