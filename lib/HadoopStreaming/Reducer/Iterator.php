@@ -1,44 +1,55 @@
 <?php
-/**
- * HadoopStreaming_Reducer_Iterator
- * @author makoto_kw
- */
-class HadoopStreaming_Reducer_Iterator implements Iterator
-{
-    var $key,
-        $emits,
-        $hasNext,
-        $nextKey,
-        $nextEmit,
-        $demiliter,
-        $autoSerialize;
+namespace HadoopStreaming\Reducer;
 
-    function __construct($delimiter = "\t", $autoSerialize = true)
+class Iterator implements \Iterator
+{
+    protected $key;
+    protected $emits;
+    protected $hasNext;
+    protected $nextKey;
+    protected $nextEmit;
+
+    /**
+     * @var string
+     */
+    protected $delimiter;
+
+    /**
+     * @var bool
+     */
+    protected $autoSerialize;
+
+    public function __construct($delimiter = "\t", $autoSerialize = true)
     {
         $this->delimiter = $delimiter;
         $this->autoSerialize = $autoSerialize;
     }
 
-    function rewind() {
+    public function rewind()
+    {
         $this->key = null;
         $this->nextKey = null;
         $this->nextEmit = null;
         $this->aggregateEmit();
     }
 
-    function current() {
+    public function current()
+    {
         return $this->emits;
     }
 
-    function key() {
+    public function key()
+    {
         return $this->key;
     }
 
-    function next() {
+    public function next()
+    {
         $this->aggregateEmit();
     }
 
-    function aggregateEmit() {
+    public function aggregateEmit()
+    {
         unset($this->key, $this->emits);
         if (isset($this->nextKey)) {
             $this->key = $this->nextKey;
@@ -49,7 +60,9 @@ class HadoopStreaming_Reducer_Iterator implements Iterator
         }
         while (!feof(STDIN)) {
             @list ($key, $value) = explode($this->delimiter, trim(fgets(STDIN)), 2);
-            if (!isset($value)) continue;
+            if (!isset($value)) {
+                continue;
+            }
             if ($this->autoSerialize) {
                 $value = unserialize($value);
             }
@@ -68,7 +81,8 @@ class HadoopStreaming_Reducer_Iterator implements Iterator
         }
     }
 
-    function valid() {
+    public function valid()
+    {
         return (isset($this->key));
     }
 }

@@ -1,39 +1,54 @@
 <?php
-/**
- * HadoopStreaming_Mapper
- * @author makoto_kw
- */
-abstract class HadoopStreaming_Mapper
-{
-    var $delimiter = "\t";
-    var $autoSerialize = true;
+namespace HadoopStreaming;
 
-    function __construct($options = array())
+abstract class Mapper
+{
+    /**
+     * @var string
+     */
+    protected $delimiter = "\t";
+
+    /**
+     * @var bool
+     */
+    protected $autoSerialize = true;
+
+    /**
+     * @param array $options
+     */
+    public function __construct($options = array())
     {
-        $this->initalize($options);
+        $this->initialize($options);
         while (!feof(STDIN)) {
             if (false === $this->map(trim(fgets(STDIN)))) {
                 break;
             }
         }
     }
-    
-    function initalize($options = array())
+
+    /**
+     * @param array $options
+     */
+    protected function initialize($options = array())
     {
     }
 
     /**
      * map
-     * @param string $s	a line from STDIN
+     * @param string $s    a line from STDIN
      */
-    abstract function map($s);
+    abstract protected function map($s);
 
-    function emit($key, $values)
+    /**
+     * @param $key
+     * @param $values
+     */
+    protected function emit($key, $values)
     {
         if ($this->autoSerialize) {
-            echo $key.$this->delimiter.serialize($values).PHP_EOL;
+            echo $key . $this->delimiter . serialize($values) . PHP_EOL;
         } else {
-            echo $key.$this->delimiter.$values.PHP_EOL;
-		}
-	}
+            echo $key . $this->delimiter . $values . PHP_EOL;
+        }
+    }
 }

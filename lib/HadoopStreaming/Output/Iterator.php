@@ -1,45 +1,61 @@
 <?php
-require_once(dirname(__FILE__).'/FileIterator.php');
-require_once(dirname(__FILE__).'/PartIterator.php');
+namespace HadoopStreaming\Output;
 
-/**
- * HadoopStreaming_Output_Iterator
- * @author makoto_kw
- */
-class HadoopStreaming_Output_Iterator implements Iterator
+class Iterator implements \Iterator
 {
-    var $part,
-        $files,
-        $key,
-        $emit,
-        $delimiter,
-        $autoSerialize;
+    /**
+     * @var PartIterator
+     */
+    protected $part;
 
-    function __construct($dir, $delimiter = "\t", $autoSerialize = true)
+    /**
+     * @var FileIterator
+     */
+    protected $files;
+
+    /**
+     * @var string
+     */
+    protected $delimiter;
+
+    /**
+     * @var bool
+     */
+    protected $autoSerialize;
+
+    protected $key;
+    protected $emit;
+
+    public function __construct($dir, $delimiter = "\t", $autoSerialize = true)
     {
-        $this->files = new HadoopStreaming_Output_FileIterator($dir);
+        $this->files = new FileIterator($dir);
         $this->delimiter = $delimiter;
         $this->autoSerialize = $autoSerialize;
     }
 
-    function rewind() {
+    public function rewind()
+    {
         $this->files->rewind();
         $this->readEmit();
     }
 
-    function current() {
+    public function current()
+    {
         return $this->emit;
     }
 
-    function key() {
+    public function key()
+    {
         return $this->key;
     }
 
-    function next() {
+    public function next()
+    {
         $this->readEmit();
     }
 
-    function readEmit() {
+    public function readEmit()
+    {
         unset($this->key, $this->emit);
 
         if (isset($this->part)) {
@@ -55,7 +71,7 @@ class HadoopStreaming_Output_Iterator implements Iterator
         }
         if (!isset($this->part) && $this->files->valid()) {
             if ($file = $this->files->current()) {
-                $this->part = new HadoopStreaming_Output_PartIterator($file, $this->delimiter, $this->autoSerialize);
+                $this->part = new PartIterator($file, $this->delimiter, $this->autoSerialize);
                 $this->part->rewind();
                 if ($this->part->valid()) {
                     $this->key = $this->part->key();
@@ -66,7 +82,8 @@ class HadoopStreaming_Output_Iterator implements Iterator
         }
     }
 
-    function valid() {
+    public function valid()
+    {
         return (isset($this->key));
-	}
+    }
 }
