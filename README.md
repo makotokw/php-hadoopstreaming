@@ -1,6 +1,19 @@
 php-hadoopstreaming
 ==============
 
+## Install
+
+Add to composer.json
+
+    {
+        "require": {
+            "makotokw/hadoopstreaming": "dev-master"
+        }
+    }
+
+
+## Usage
+
 simple test without hadoop
 
     cd examples/wordcount
@@ -16,8 +29,6 @@ with hadoop streaming
      -reducer 'php examples/wordcount/reducer.php'
 
 
-LICENSE
-=========
+## LICENSE
 
 The MIT License (MIT)  
-See also LICENSE file
