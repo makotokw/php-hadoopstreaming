@@ -1,6 +1,7 @@
 {
     "name" : "makotokw/hadoopstreaming",
     "description": "Map/Reduce classes for Hadoop Streaming",
+    "keywords": ["hadoop", "streaming"],
     "homepage": "http://github.com/makotokw/php-hadoopstreaming",
     "type": "library",
     "license": "MIT",
