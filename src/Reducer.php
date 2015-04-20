@@ -1,5 +1,7 @@
 <?php
-namespace HadoopStreaming;
+namespace Makotokw\HadoopStreaming;
+
+use Makotokw\HadoopStreaming\Reducer\Iterator as ReducerIterator;
 
 abstract class Reducer
 {
@@ -51,7 +53,7 @@ abstract class Reducer
         if (!isset($this->outputAutoSerialize)) {
             $this->outputAutoSerialize = $this->autoSerialize;
         }
-        $iterator = new \HadoopStreaming\Reducer\Iterator($this->inputDelimiter, $this->inputAutoSerialize);
+        $iterator = new ReducerIterator($this->inputDelimiter, $this->inputAutoSerialize);
         foreach ($iterator as $key => $emits) {
             if ($values = $this->reduce($key, $emits)) {
                 $this->emit($key, $values);

@@ -1,5 +1,5 @@
 <?php
-namespace HadoopStreaming\Reducer;
+namespace Makotokw\HadoopStreaming\Reducer;
 
 class Iterator implements \Iterator
 {

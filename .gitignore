@@ -1,5 +1,16 @@
-vendor/
+### Intellij ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
+
+*.iml
+
+## Directory-based project format:
 .idea/
-composer.lock
-phpunit.xml
+
+### Composer ###
+composer.phar
+vendor/
+
+### OSX ###
 .DS_Store
+.AppleDouble
+.LSOverride

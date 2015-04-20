@@ -1,8 +1,8 @@
 #!/usr/bin/php
 <?php
-require_once dirname(__FILE__) . '/../../lib/HadoopStreaming/Mapper.php';
+require_once __DIR__ . '/../../src/Mapper.php';
 
-class Mapper extends \HadoopStreaming\Mapper
+class Mapper extends \Makotokw\HadoopStreaming\Mapper
 {
     public function map($s)
     {

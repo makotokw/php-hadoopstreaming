@@ -1,5 +1,5 @@
 <?php
-namespace HadoopStreaming;
+namespace Makotokw\HadoopStreaming;
 
 abstract class Mapper
 {

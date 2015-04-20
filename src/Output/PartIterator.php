@@ -1,5 +1,5 @@
 <?php
-namespace HadoopStreaming\Output;
+namespace Makotokw\HadoopStreaming\Output;
 
 class PartIterator implements \Iterator
 {
